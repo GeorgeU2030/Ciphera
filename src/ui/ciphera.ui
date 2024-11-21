@@ -268,7 +268,8 @@ padding-left:25px;
      <property name="styleSheet">
       <string notr="true">border-radius:5px;
 border:2px solid;
-border-color: rgb(94, 20, 250);</string>
+border-color: rgb(94, 20, 250);
+background-color: rgb(255, 255, 255);</string>
      </property>
      <property name="echoMode">
       <enum>QLineEdit::EchoMode::Password</enum>
@@ -309,6 +310,7 @@ border-color: rgb(94, 20, 250);</string>
      </property>
      <property name="styleSheet">
       <string notr="true">margin-right:3px;
+background-color: rgb(222, 221, 218);
 </string>
      </property>
     </widget>
@@ -686,7 +688,8 @@ color:rgb(240,240,240);
      <property name="styleSheet">
       <string notr="true">border-radius:7px;
 border:2px solid;
-border-color: rgb(0, 135, 182);</string>
+border-color: rgb(0, 135, 182);
+background-color: rgb(222, 221, 218);</string>
      </property>
     </widget>
     <widget class="QLabel" name="MessageFile">

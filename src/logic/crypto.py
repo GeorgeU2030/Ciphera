@@ -42,14 +42,19 @@ def encrypt_file(input_file: str, output_file: str, password: str, hash_alg: str
     encryptor = cipher.encryptor()
     ciphertext = encryptor.update(padded_data) + encryptor.finalize()
 
-    # Write the ciphered file
+    output_dir = os.path.join(os.path.dirname(__file__), '../encrypted')
+    os.makedirs(output_dir, exist_ok=True)
+
+    output_file = os.path.join(output_dir, output_file)
+
+    # Write the encrypted file
     with open(output_file, 'wb') as f:
         f.write(salt)  # 16 bytes
         f.write(iv)  # 16 bytes
         f.write(file_hash)  # Size
         f.write(ciphertext)  # Ciphered content
 
-    print(f"File ciphered correctly in '{output_file}'.")
+    print(f"File encrypted correctly in '{output_file}'.")
 
 # Function to decipher a file
 def decrypt_file(input_file: str, output_file: str, password: str, hash_alg: str, iterations: int):
@@ -57,7 +62,7 @@ def decrypt_file(input_file: str, output_file: str, password: str, hash_alg: str
         salt = f.read(16)  # Read the Salt
         iv = f.read(16)    # Read the iv
         file_hash = f.read(hashlib.new(hash_alg.lower()).digest_size)  # Read the hash
-        ciphertext = f.read()   # Read the ciphered content
+        ciphertext = f.read()   # Read the encrypted content
 
     key = derive_key(password, salt, HASH_ALGORITHMS[hash_alg], iterations)  # Derive the key
 
