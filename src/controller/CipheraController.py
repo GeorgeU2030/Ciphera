@@ -20,7 +20,7 @@ class CipheraController:
         self.view.LowButton.clicked.connect(lambda: self.set_security_resume("LOW"))
         self.view.CipherButton.clicked.connect(self.cipher_text)
         self.view.LoadResultButton.clicked.connect(self.load_result_file)
-        self.view.DecryptButton.clicked.connect(self.decrypt_text)
+        self.view.DecipherButton.clicked.connect(self.decrypt_text)
 
     # Load the algorithms into the combobox, from the dictionary HASH_ALGORITHMS
     def load_algotithms(self):
@@ -102,7 +102,7 @@ class CipheraController:
 
     # Cipher the text
     def cipher_text(self):
-
+        print("Hola carlitos, está conectado")
         if not self.verify_inputs():
             return
 
