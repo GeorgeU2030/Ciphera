@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QFileDialog
-from src.logic.crypto import HASH_ALGORITHMS,encrypt_file
+from src.logic.crypto import HASH_ALGORITHMS,encrypt_file, decrypt_file
 from src.views.alert import show_alert
 from PyQt6 import QtCore
 import os
@@ -20,6 +20,7 @@ class CipheraController:
         self.view.LowButton.clicked.connect(lambda: self.set_security_resume("LOW"))
         self.view.CipherButton.clicked.connect(self.cipher_text)
         self.view.LoadResultButton.clicked.connect(self.load_result_file)
+        self.view.DecryptButton.clicked.connect(self.decrypt_text)
 
     # Load the algorithms into the combobox, from the dictionary HASH_ALGORITHMS
     def load_algotithms(self):
@@ -141,3 +142,21 @@ class CipheraController:
         self.view.LoadResultButton.hide()
         self.view.PasswordInput.clear()
         self.view.SecurityResumeLabel.setText("---")
+
+    #Decrypt text
+    def decrypt_text(self):
+        if not self.verify_inputs():
+            return
+        algorithm = self.view.AlgorithmResumeLabel.text()
+        iterations = self.get_iterations()
+        password = self.view.PasswordInput.text()
+        input_file = self.input_file_path
+        file_name = self.view.MessageFile.text().split(".")[0]
+        output_file = file_name + "decrypted.txt"
+
+        #Decrypt the text with decrypt logic method
+        decrypt_file(input_file, output_file, password, algorithm, iterations)
+        self.view.LoadResultButton.show()
+        self.view.MessageFile.setText(output_file)
+
+
