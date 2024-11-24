@@ -59,7 +59,6 @@ def encrypt_file(input_file: str, output_file: str, password: str, hash_alg: str
 # Function to decipher a file
 def decrypt_file(input_file: str, output_file: str, password: str, hash_alg: str, iterations: int):
     with open(input_file, 'rb') as f:
-        print("into decrypt method")
         salt = f.read(16)  # Read the Salt
         iv = f.read(16)    # Read the iv
         file_hash = f.read(hashlib.new(hash_alg.lower()).digest_size)  # Read the hash

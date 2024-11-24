@@ -122,14 +122,12 @@ class CipheraController:
 
     def load_result_file(self):
         output_file_name = self.view.MessageFile.text()
-        print(self.encrypt)
         if self.encrypt:
             dir_use = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'encrypted'))
         else:
             dir_use = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'decrypted'))
         print(dir_use)
         output_file = os.path.join(dir_use  , output_file_name)
-        #print(output_file)
         try:
             with open(output_file, 'rb') as file:  # Open the file in binary mode
                 file_content = file.read()
