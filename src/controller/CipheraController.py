@@ -12,6 +12,7 @@ class CipheraController:
         self.view = view
         self.input_file_path = None
         self.is_encrypt = False
+        self.encrypt=True
         self.view.SecurityResumeLabel.setText("---")
         self.load_algotithms()
         self.view.AlgorithmSelect.currentIndexChanged.connect(self.update_algorithm_resume)
@@ -53,6 +54,7 @@ class CipheraController:
 
                 except UnicodeDecodeError:
                     hex_content = binascii.hexlify(file_content).decode('utf-8')
+                    self.input_file_path = file_path
                     self.view.textEdit.setPlainText(hex_content)
                     self.is_encrypt = True
 
@@ -102,7 +104,6 @@ class CipheraController:
 
     # Cipher the text
     def cipher_text(self):
-        print("Hola carlitos, está conectado")
         if not self.verify_inputs():
             return
 
@@ -113,19 +114,25 @@ class CipheraController:
         file_name = self.view.MessageFile.text().split(".")[0]
         output_file = file_name + "ciphered.txt"
 
+        self.encrypt = True
         # Cipher the text with crypto logic method
         encrypt_file(input_file, output_file, password, algorithm, iterations)
-
         self.view.LoadResultButton.show()
         self.view.MessageFile.setText(output_file)
 
     def load_result_file(self):
         output_file_name = self.view.MessageFile.text()
-        output_file = os.path.join(os.path.dirname(__file__), '../encrypted', output_file_name)
+        print(self.encrypt)
+        if self.encrypt:
+            dir_use = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'encrypted'))
+        else:
+            dir_use = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'decrypted'))
+        print(dir_use)
+        output_file = os.path.join(dir_use  , output_file_name)
+        #print(output_file)
         try:
             with open(output_file, 'rb') as file:  # Open the file in binary mode
                 file_content = file.read()
-
             try:
                 # Try to decode as utf-8
                 text_content = file_content.decode('utf-8')
@@ -145,6 +152,8 @@ class CipheraController:
 
     #Decrypt text
     def decrypt_text(self):
+        #print("Hi, I connect ui and controller classes")
+        self.is_encrypt = False
         if not self.verify_inputs():
             return
         algorithm = self.view.AlgorithmResumeLabel.text()
@@ -152,11 +161,12 @@ class CipheraController:
         password = self.view.PasswordInput.text()
         input_file = self.input_file_path
         file_name = self.view.MessageFile.text().split(".")[0]
+        print(file_name)
         output_file = file_name + "decrypted.txt"
 
         #Decrypt the text with decrypt logic method
+        self.encrypt = False
         decrypt_file(input_file, output_file, password, algorithm, iterations)
         self.view.LoadResultButton.show()
         self.view.MessageFile.setText(output_file)
-
 

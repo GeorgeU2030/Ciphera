@@ -59,6 +59,7 @@ def encrypt_file(input_file: str, output_file: str, password: str, hash_alg: str
 # Function to decipher a file
 def decrypt_file(input_file: str, output_file: str, password: str, hash_alg: str, iterations: int):
     with open(input_file, 'rb') as f:
+        print("into decrypt method")
         salt = f.read(16)  # Read the Salt
         iv = f.read(16)    # Read the iv
         file_hash = f.read(hashlib.new(hash_alg.lower()).digest_size)  # Read the hash
@@ -75,12 +76,17 @@ def decrypt_file(input_file: str, output_file: str, password: str, hash_alg: str
     unparsed = PKCS7(algorithms.AES.block_size).unpadder()
     plaintext = unparsed.update(padded_plaintext) + unparsed.finalize()
 
+
     # Verify the integrity
     computed_hash = hashlib.new(hash_alg.lower(), plaintext).digest()
     if computed_hash != file_hash:
         print("Error: the hash does not match.")
         return
 
+    output_dir = os.path.join(os.path.dirname(__file__), '../decrypted')
+    os.makedirs(output_dir, exist_ok=True)
+
+    output_file = os.path.join(output_dir, output_file)
     # Write the deciphered file
     with open(output_file, 'wb') as f:
         f.write(plaintext)
